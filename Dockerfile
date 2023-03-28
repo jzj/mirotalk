@@ -8,7 +8,7 @@ RUN apk add --no-cache \
 	vim
 
 COPY package.json .
-COPY .env.template ./.env
+# COPY .env.template ./.env
 
 RUN npm install
 
