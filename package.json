@@ -53,5 +53,9 @@
     "devDependencies": {
         "node-fetch": "^2.6.6",
         "prettier": "2.8.7"
+    },
+    "volta": {
+        "node": "16.19.1",
+        "npm": "8.19.3"
     }
 }
