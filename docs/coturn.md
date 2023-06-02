@@ -1,5 +1,7 @@
 # Install Coturn STUN/TURN server
 
+![stunTurn](../public/images/stun-turn.png)
+
 ## Requirements
 
 -   Recommended: [Hetzner](https://www.hetzner.com/cloud) (`CPX11` it's enough, OS: `Ubuntu 20.04 LTS / 22.04.1 LTS`).
@@ -39,7 +41,7 @@ lt-cred-mech
 
 user=your.username:your.password
 
-server_name=your.domain.name
+server-name=your.domain.name
 realm=your.domain.name
 
 total-quota=100
@@ -64,6 +66,15 @@ Group=root
 
 ```bash
 $ sudo systemctl daemon-reload
+```
+
+## Coturn commands
+
+```bash
+$ sudo service coturn status
+$ sudo service coturn stop
+$ sudo service coturn start
+$ sudo service coturn restart
 ```
 
 # Test
