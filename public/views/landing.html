@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="no-js">
     <head>
         <!-- Title and Icon -->
@@ -103,14 +103,15 @@
                                 </h3>
                             </div>
                             <div class="cta-action">
-                                <div class="mb-24">
+                                <div class="mb-0">
                                     <label class="form-label screen-reader" for="roomName">mirotalk</label>
                                     <div class="form-group-desktop">
                                         <input
+                                            id="roomName"
                                             class="form-input"
                                             type="text"
-                                            id="roomName"
                                             value="mirotalk"
+                                            maxlength="32"
                                             style="border-radius: 6px"
                                         />
                                         <button
@@ -147,6 +148,7 @@
                                                 const roomName = filterXSS(document.getElementById('roomName').value);
                                                 if (roomName) {
                                                     window.location.href = '/join/' + roomName;
+                                                    window.localStorage.lastRoom = roomName;
                                                 } else {
                                                     alert('Room name empty!\nPlease pick a room name.');
                                                 }
@@ -154,58 +156,28 @@
                                         </script>
                                     </div>
                                 </div>
+                                <div id="lastRoomContainer" class="last-room">
+                                    <span>Your recent room:</span>
+                                    <a id="lastRoom"></a>
+                                </div>
+                                <script>
+                                    const lastRoomContainer = document.getElementById('lastRoomContainer');
+                                    const lastRoom = document.getElementById('lastRoom');
+                                    const lastRoomName = window.localStorage.lastRoom
+                                        ? window.localStorage.lastRoom
+                                        : '';
+                                    if (lastRoomName) {
+                                        lastRoomContainer.style.display = 'inline-flex';
+                                        lastRoom.setAttribute('href', '/join/' + lastRoomName);
+                                        lastRoom.innerText = lastRoomName;
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section class="clients section">
-                    <div class="container">
-                        <div class="clients-inner section-inner has-top-divider has-bottom-divider">
-                            <h2 style="text-align: center">Our sponsors</h2>
-                            <ul class="list-reset">
-                                <li class="reveal-from-top" data-reveal-delay="150">
-                                    <a href="https://broadcastx.de/" target="_blank"
-                                        ><img src="../sponsors/BroadcastX.png" alt="BroadcastX"
-                                    /></a>
-                                </li>
-                                <li class="reveal-from-top" data-reveal-delay="300">
-                                    <a href="https://hetzner.cloud/?ref=XdRifCzCK3bn" target="_blank"
-                                        ><img src="../sponsors/Hetzner.png" alt="Hetzner"
-                                    /></a>
-                                </li>
-                                <li class="reveal-from-top" data-reveal-delay="450">
-                                    <a style="cursor: pointer" onclick="adultContent()"
-                                        ><img src="../sponsors/LuvLounge.png" alt="LuvLounge"
-                                    /></a>
-                                </li>
-                                <script>
-                                    function adultContent() {
-                                        if (
-                                            confirm(
-                                                '18+ WARNING! ADULTS ONLY!\n\nExplicit material for viewing by adults 18 years of age or older. You must be at least 18 years old to access to this site!\n\nProceeding you are agree and confirm to have 18+ year.',
-                                            )
-                                        ) {
-                                            window.open('https://luvlounge.ca', '_blank');
-                                        }
-                                    }
-                                </script>
-                                <li class="reveal-from-top" data-reveal-delay="450">
-                                    <a href="https://www.questionpro.com" target="_blank"
-                                        ><img src="../sponsors/QuestionPro.png" alt="QuestionPro"
-                                    /></a>
-                                </li>
-                                <li class="reveal-from-top" data-reveal-delay="450">
-                                    <a href="https://www.browserstack.com" target="_blank"
-                                        ><img src="../sponsors/BrowserStack.png" alt="BrowserStack"
-                                    /></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="features-tiles section center-content">
+                <section class="features-tiles section center-content mt-32">
                     <div class="container">
                         <div class="features-tiles-inner section-inner has-top-divider">
                             <div class="section-header">
@@ -227,10 +199,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-02.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/screen_sharing.svg"
                                                     alt="Screen Sharing"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -249,10 +220,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-04.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/webcam_streaming.svg"
                                                     alt="WebCam Streaming"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -270,12 +240,7 @@
                                     <div class="tiles-item-inner">
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
-                                                <img
-                                                    src="../images/feature-tile-icon-01.svg"
-                                                    alt="Chat Room"
-                                                    width="72"
-                                                    height="72"
-                                                />
+                                                <img class="wh-200-150" src="../svg/webcam_chat.svg" alt="Chat Room" />
                                             </div>
                                         </div>
                                         <div class="features-tiles-item-content">
@@ -293,10 +258,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-03.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/recording_meeting.svg"
                                                     alt="Meeting Recording"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -315,10 +279,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-06.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/interactive_whitboard.svg"
                                                     alt="Interactive Whiteboard"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -337,10 +300,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-02.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/file_sharing.svg"
                                                     alt="File Sharing"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -359,10 +321,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-05.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/total_privacy.svg"
                                                     alt="Total Privacy"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -381,10 +342,9 @@
                                         <div class="features-tiles-item-header">
                                             <div class="features-tiles-item-image mb-16">
                                                 <img
-                                                    src="../images/feature-tile-icon-05.svg"
+                                                    class="wh-200-150"
+                                                    src="../svg/maximum_security.svg"
                                                     alt="Maximum Security"
-                                                    width="72"
-                                                    height="72"
                                                 />
                                             </div>
                                         </div>
@@ -455,6 +415,7 @@
                                                     alt="Team member author"
                                                     width="180"
                                                     height="180"
+                                                    class="rounded-image"
                                                 />
                                             </div>
                                         </div>
@@ -495,6 +456,96 @@
                                     >
                                 </div>
                             </div>
+                        </div>
+                        <div class="container">
+                            <div class="section-inner has-top-divider has-bottom-divider reveal-from-top">
+                                <div class="container-xs">
+                                    <div style="width: 200px; margin: 0 auto; text-align: center">
+                                        <p>Powered by</p>
+                                        <a href="https://hetzner.cloud/?ref=XdRifCzCK3bn">
+                                            <img src="../sponsors/Hetzner.png" alt="Powered by Hetzner" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="clients section">
+                    <div class="container">
+                        <h2 class="mt-24" style="text-align: center">Our sponsors</h2>
+                        <div class="clients-inner section-inner has-animations has-top-divider has-bottom-divider">
+                            <ul class="list-reset">
+                                <li class="reveal-from-top" data-reveal-delay="150">
+                                    <div class="clients-logo">
+                                        <a href="https://broadcastx.de/" target="_blank"
+                                            ><img
+                                                class="clients-size-logo"
+                                                src="../sponsors/BroadcastX.png"
+                                                alt="BroadcastX"
+                                        /></a>
+                                    </div>
+                                </li>
+                                <li class="reveal-from-top" data-reveal-delay="300">
+                                    <div class="clients-logo">
+                                        <a href="https://hetzner.cloud/?ref=XdRifCzCK3bn" target="_blank"
+                                            ><img class="clients-size-logo" src="../sponsors/Hetzner.png" alt="Hetzner"
+                                        /></a>
+                                    </div>
+                                </li>
+                                <li class="reveal-from-top" data-reveal-delay="450">
+                                    <div class="clients-logo">
+                                        <a style="cursor: pointer" onclick="adultContent()"
+                                            ><img
+                                                class="clients-size-logo"
+                                                src="../sponsors/LuvLounge.png"
+                                                alt="LuvLounge"
+                                        /></a>
+                                    </div>
+                                </li>
+                                <script>
+                                    function adultContent() {
+                                        if (
+                                            confirm(
+                                                '18+ WARNING! ADULTS ONLY!\n\nExplicit material for viewing by adults 18 years of age or older. You must be at least 18 years old to access to this site!\n\nProceeding you are agree and confirm to have 18+ year.',
+                                            )
+                                        ) {
+                                            window.open('https://luvlounge.ca', '_blank');
+                                        }
+                                    }
+                                </script>
+                                <li class="reveal-from-top" data-reveal-delay="600">
+                                    <div class="clients-logo">
+                                        <a href="https://www.questionpro.com" target="_blank"
+                                            ><img
+                                                class="clients-size-logo"
+                                                src="../sponsors/QuestionPro.png"
+                                                alt="QuestionPro"
+                                        /></a>
+                                    </div>
+                                </li>
+                                <li class="reveal-from-top" data-reveal-delay="750">
+                                    <div class="clients-logo">
+                                        <a href="https://www.browserstack.com" target="_blank"
+                                            ><img
+                                                class="clients-size-logo"
+                                                src="../sponsors/BrowserStack.png"
+                                                alt="BrowserStack"
+                                        /></a>
+                                    </div>
+                                </li>
+                                <li class="reveal-from-top" data-reveal-delay="750">
+                                    <div class="clients-logo">
+                                        <a href="https://crystalsound.ai" target="_blank"
+                                            ><img
+                                                class="clients-size-logo"
+                                                src="../sponsors/CrystalSound.png"
+                                                alt="CrystalSound"
+                                        /></a>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </section>

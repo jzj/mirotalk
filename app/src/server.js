@@ -176,6 +176,7 @@ if (sentryEnabled) {
 let chatGPT;
 const configChatGPT = {
     enabled: getEnvBoolean(process.env.CHATGPT_ENABLED),
+    basePath: process.env.CHATGPT_BASE_PATH,
     apiKey: process.env.CHATGTP_APIKEY,
     model: process.env.CHATGTP_MODEL,
     max_tokens: parseInt(process.env.CHATGPT_MAX_TOKENS),
@@ -183,11 +184,12 @@ const configChatGPT = {
 };
 if (configChatGPT.enabled) {
     if (configChatGPT.apiKey) {
-        const { Configuration, OpenAIApi } = require('openai');
-        const configuration = new Configuration({
+        const { OpenAI } = require('openai');
+        const configuration = {
+            basePath: configChatGPT.basePath,
             apiKey: configChatGPT.apiKey,
-        });
-        chatGPT = new OpenAIApi(configuration);
+        };
+        chatGPT = new OpenAI(configuration);
     } else {
         log.warning('ChatGPT seems enabled, but you missing the apiKey!');
     }
@@ -222,7 +224,23 @@ app.use(express.static(dir.public)); // Use all static files from the public fol
 app.use(bodyParser.urlencoded({ extended: true })); // Need for Slack API body parser
 app.use(apiBasePath + '/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // api docs
 
-// all start from here
+// Logs requests
+app.use((req, res, next) => {
+    log.debug('New request:', {
+        // headers: req.headers,
+        body: req.body,
+        method: req.method,
+        path: req.originalUrl,
+    });
+    next();
+});
+
+// POST start from here...
+app.post('*', function (next) {
+    next();
+});
+
+// GET start from here...
 app.get('*', function (next) {
     next();
 });
@@ -247,32 +265,11 @@ app.use((err, req, res, next) => {
 
 // main page
 app.get(['/'], (req, res) => {
-    if (hostCfg.protected == true) {
+    if (hostCfg.protected) {
         hostCfg.authenticated = false;
         res.sendFile(views.login);
     } else {
         res.sendFile(views.landing);
-    }
-});
-
-// handle login on host protected
-app.get(['/login'], (req, res) => {
-    if (hostCfg.protected == true) {
-        const ip = getIP(req);
-        log.debug(`Request login to host from: ${ip}`, req.query);
-        const { username, password } = checkXSS(req.query);
-        if (username == hostCfg.username && password == hostCfg.password) {
-            hostCfg.authenticated = true;
-            authHost = new Host(ip, true);
-            log.debug('LOGIN OK', { ip: ip, authorized: authHost.isAuthorized(ip) });
-            res.sendFile(views.landing);
-        } else {
-            log.debug('LOGIN KO', { ip: ip, authorized: false });
-            hostCfg.authenticated = false;
-            res.sendFile(views.login);
-        }
-    } else {
-        res.redirect('/');
     }
 });
 
@@ -283,7 +280,7 @@ app.get(['/about'], (req, res) => {
 
 // set new room name and join
 app.get(['/newcall'], (req, res) => {
-    if (hostCfg.protected == true) {
+    if (hostCfg.protected) {
         const ip = getIP(req);
         if (allowedIP(ip)) {
             res.sendFile(views.newCall);
@@ -322,13 +319,17 @@ app.get('/join/', (req, res) => {
             http://localhost:3000/join?room=test&name=mirotalk&audio=1&video=1&screen=1&notify=1
             https://p2p.mirotalk.com/join?room=test&name=mirotalk&audio=1&video=1&screen=1&notify=1
             https://mirotalk.up.railway.app/join?room=test&name=mirotalk&audio=1&video=1&screen=1&notify=1
-            https://mirotalk.herokuapp.com/join?room=test&name=mirotalk&audio=1&video=1&screen=1&notify=1
         */
         const { room, name, audio, video, screen, notify } = checkXSS(req.query);
         // all the params are mandatory for the direct room join
-        if (room && name && audio && video && screen && notify) {
+        // if (room && name && audio && video && screen && notify) {
+        if (room) {
+            // only room mandatory
             return res.sendFile(views.client);
         }
+    }
+    if (hostCfg.protected) {
+        return res.sendFile(views.login);
     }
     res.redirect('/');
 });
@@ -339,6 +340,9 @@ app.get('/join/:roomId', function (req, res) {
     if (hostCfg.authenticated) {
         res.sendFile(views.client);
     } else {
+        if (hostCfg.protected) {
+            return res.sendFile(views.login);
+        }
         res.redirect('/');
     }
 });
@@ -346,6 +350,40 @@ app.get('/join/:roomId', function (req, res) {
 // Not specified correctly the room id
 app.get('/join/*', function (req, res) {
     res.redirect('/');
+});
+
+// logged
+app.get(['/logged'], (req, res) => {
+    const ip = getIP(req);
+    if (allowedIP(ip)) {
+        res.sendFile(views.landing);
+    } else {
+        hostCfg.authenticated = false;
+        res.sendFile(views.login);
+    }
+});
+
+/* AXIOS */
+
+// handle login on host protected
+app.post(['/login'], (req, res) => {
+    if (hostCfg.protected) {
+        const ip = getIP(req);
+        log.debug(`Request login to host from: ${ip}`, req.body);
+        const { username, password } = checkXSS(req.body);
+        if (username == hostCfg.username && password == hostCfg.password) {
+            hostCfg.authenticated = true;
+            authHost = new Host(ip, true);
+            log.debug('LOGIN OK', { ip: ip, authorized: authHost.isAuthorized(ip) });
+            res.status(200).json({ message: 'authorized' });
+        } else {
+            log.debug('LOGIN KO', { ip: ip, authorized: false });
+            hostCfg.authenticated = false;
+            res.status(401).json({ message: 'unauthorized' });
+        }
+    } else {
+        res.redirect('/');
+    }
 });
 
 /**
@@ -589,13 +627,13 @@ io.sockets.on('connect', async (socket) => {
                 if (!configChatGPT.enabled) return cb('ChatGPT seems disabled, try later!');
                 try {
                     // https://platform.openai.com/docs/api-reference/completions/create
-                    const completion = await chatGPT.createCompletion({
+                    const completion = await chatGPT.completions.create({
                         model: configChatGPT.model || 'text-davinci-003',
                         prompt: params.prompt,
                         max_tokens: configChatGPT.max_tokens || 1000,
                         temperature: configChatGPT.temperature || 0,
                     });
-                    const response = completion.data.choices[0].text;
+                    const response = completion.choices[0].text;
                     log.debug('ChatGPT', {
                         time: params.time,
                         room: room_id,
@@ -605,12 +643,18 @@ io.sockets.on('connect', async (socket) => {
                     });
                     cb(response);
                 } catch (error) {
-                    if (error.response) {
-                        log.error('ChatGPT', error.response);
-                        cb(error.response.data.error.message);
-                    } else {
-                        log.error('ChatGPT', error.message);
+                    if (error instanceof OpenAI.APIError) {
+                        log.error('ChatGPT', {
+                            status: error.status,
+                            message: error.message,
+                            code: error.code,
+                            type: error.type,
+                        });
                         cb(error.message);
+                    } else {
+                        // Non-API error
+                        log.error('ChatGPT', error);
+                        cb(error);
                     }
                 }
                 break;
@@ -1208,6 +1252,7 @@ async function getPeerGeoLocation(ip) {
  */
 async function isPeerPresenter(room_id, peer_id, peer_name, peer_uuid) {
     let isPresenter = false;
+    if (typeof presenters[room_id] === 'undefined' || presenters[room_id] === null) return false;
     try {
         isPresenter =
             typeof presenters === 'object' &&
@@ -1250,8 +1295,9 @@ function allowedIP(ip) {
  * @param {object} socket
  */
 function removeIP(socket) {
-    if (hostCfg.protected == true) {
+    if (hostCfg.protected) {
         const ip = socket.handshake.address;
+        log.debug('Host protected check ip', { ip: ip });
         if (ip && allowedIP(ip)) {
             authHost.deleteIP(ip);
             hostCfg.authenticated = false;

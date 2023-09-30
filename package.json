@@ -5,6 +5,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node app/src/server.js",
+        "start-dev": "nodemon app/src/server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "npx prettier --write .",
         "docker-build": "docker build --tag mirotalk/p2p:latest .",
@@ -33,27 +34,28 @@
     "license": "AGPL-3.0",
     "homepage": "https://github.com/miroslavpejic85/mirotalk",
     "dependencies": {
-        "@sentry/integrations": "^7.53.1",
-        "@sentry/node": "^7.53.1",
-        "axios": "^1.4.0",
+        "@sentry/integrations": "^7.70.0",
+        "@sentry/node": "^7.70.0",
+        "axios": "^1.5.0",
         "body-parser": "^1.20.2",
         "colors": "^1.4.0",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
         "crypto-js": "^4.1.1",
-        "dotenv": "^16.0.3",
+        "dotenv": "^16.3.1",
         "express": "^4.18.2",
         "ngrok": "^4.3.3",
-        "openai": "^3.2.1",
+        "openai": "^4.10.0",
         "qs": "^6.11.2",
-        "socket.io": "^4.6.1",
-        "swagger-ui-express": "^4.6.3",
-        "uuid": "9.0.0",
+        "socket.io": "^4.7.2",
+        "swagger-ui-express": "^5.0.0",
+        "uuid": "9.0.1",
         "xss": "^1.0.14",
         "yamljs": "^0.3.0"
     },
     "devDependencies": {
-        "node-fetch": "^2.6.6",
-        "prettier": "2.8.8"
+        "node-fetch": "^3.3.2",
+        "nodemon": "^3.0.1",
+        "prettier": "3.0.3"
     }
 }

@@ -55,7 +55,7 @@
 -   Direct `peer-to-peer` connection ensures the lowest latency thanks to `WebRTC`
 -   Supports [REST API](app/api/README.md) (Application Programming Interface)
 -   [Slack](https://api.slack.com/apps/) API integration
--   [Sentry](https://sentry.io/) error reporting
+-   [Sentry](https://sentry.io/) for error reporting
 -   ...
 
 </details>
@@ -75,8 +75,7 @@
 <br/>
 
 -   `Open` https://p2p.mirotalk.com/newcall or
--   https://mirotalk.up.railway.app/newcall or
--   https://mirotalk.herokuapp.com/newcall
+-   https://mirotalk.up.railway.app/newcall
 -   `Pick` your Room name and Join
 -   `Allow` using the camera and microphone
 -   `Share` the Room URL and Wait for someone to join for the video conference
@@ -91,7 +90,6 @@
 -   You can `join` directly to `room` by going to:
 -   https://p2p.mirotalk.com/join?room=test&name=mirotalk&audio=0&video=0&screen=0&notify=0
 -   https://mirotalk.up.railway.app/join?room=test&name=mirotalk&audio=0&video=0&screen=0&notify=0
--   https://mirotalk.herokuapp.com/join?room=test&name=mirotalk&audio=0&video=0&screen=0&notify=0
 
     | Params | Type    | Description     |
     | ------ | ------- | --------------- |
@@ -101,6 +99,15 @@
     | video  | boolean | video stream    |
     | screen | boolean | screen stream   |
     | notify | boolean | welcome message |
+
+> **Note**
+>
+> When [host protection is enabled](https://github.com/miroslavpejic85/mirotalk/commit/285c92605585bf204996dc0bade9b3e7c62d75df#commitcomment-103108955) the host needs to provide a valid username and password as specified in the `.env`.
+>
+> After host authentication, participants can join the room using any of the following URL formats:
+>
+> -   https://p2p.mirotalk.com/join/test (URL path)
+> -   https://p2p.mirotalk.com/join/?room=test&name=mirotalk&audio=0&video=0&screen=0&notify=0 (URL with query parameters for direct join)
 
 </details>
 
@@ -115,7 +122,7 @@ Embedding a meeting into a service or app using an iframe.
 <iframe
     allow="camera; microphone; display-capture; fullscreen; clipboard-read; clipboard-write; autoplay"
     src="https://p2p.mirotalk.com/newcall"
-    style="height: 100%; width: 100%; border: 0px;"
+    style="height: 100vh; width: 100vw; border: 0px;"
 ></iframe>
 ```
 
@@ -152,9 +159,8 @@ $ npm start
 
 ![docker](public/images/docker.png)
 
--   Install docker engine: https://docs.docker.com/engine/install/
--   Install docker compose: https://docs.docker.com/compose/install/
--   Repository docker hub: https://hub.docker.com/r/mirotalk/p2p
+-   Install [docker engine](https://docs.docker.com/engine/install/)
+-   Install [docker compose](https://docs.docker.com/compose/install/)
 
 ```bash
 # copy .env.template to .env (edit it according to your needs)
@@ -170,6 +176,7 @@ $ docker-compose down
 ```
 
 -   Open http://localhost:3000 in browser
+-   Repository [docker hub](https://hub.docker.com/r/mirotalk/p2p)
 
 </details>
 
@@ -201,12 +208,11 @@ Install your own [Stun](https://en.wikipedia.org/wiki/STUN) & [Turn](https://en.
 $ curl -X POST "http://localhost:3000/api/v1/meeting" -H "authorization: mirotalk_default_secret" -H "Content-Type: application/json"
 $ curl -X POST "https://p2p.mirotalk.com/api/v1/meeting" -H "authorization: mirotalk_default_secret" -H "Content-Type: application/json"
 $ curl -X POST "https://mirotalk.up.railway.app/api/v1/meeting" -H "authorization: mirotalk_default_secret" -H "Content-Type: application/json"
-$ curl -X POST "https://mirotalk.herokuapp.com/api/v1/meeting" -H "authorization: mirotalk_default_secret" -H "Content-Type: application/json"
 ```
 
 ## API Documentation
 
-The API documentation uses [swagger](https://swagger.io/) at http://localhost:3000/api/v1/docs. Or check it out on [live](https://p2p.mirotalk.com/api/v1/docs) & [heroku](https://mirotalk.herokuapp.com/api/v1/docs).
+The API documentation uses [swagger](https://swagger.io/) at http://localhost:3000/api/v1/docs. Or check it out on [live](https://p2p.mirotalk.com/api/v1/docs).
 
 </details>
 
@@ -247,16 +253,6 @@ https://p2p.mirotalk.com
 https://mirotalk.up.railway.app
 
 [![railway-qr](public/images/mirotalk-railway-qr.png)](https://mirotalk.up.railway.app)
-
-<br>
-
-<a href="https://heroku.com/deploy?template=https://github.com/miroslavpejic85/mirotalk"><img src="https://www.herokucdn.com/deploy/button.svg" style="width: 220px;" alt="Heroku Deploy"></a>
-
-https://mirotalk.herokuapp.com
-
-[![heroku-qr](public/images/mirotalk-heroku-qr.png)](https://mirotalk.herokuapp.com)
-
-If you want to deploy a MiroTalk P2P instance on your dedicated server, or for other needs, don't hesitate to contact us at p2p.mirotalk@gmail.com.
 
 </details>
 
@@ -325,7 +321,7 @@ Support the project by [becoming a backer or sponsor](https://github.com/sponsor
 | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | [![BroadcastX](public/sponsors/BroadcastX.png)](https://broadcastx.de/)           | [![Hetzner](public/sponsors/Hetzner.png)](https://hetzner.cloud/?ref=XdRifCzCK3bn) |
 | [![LuvLounge](public/sponsors/LuvLounge.png)](https://luvlounge.ca)               | [![QuestionPro](public/sponsors/QuestionPro.png)](https://www.questionpro.com)     |
-| [![BrowserStack](public/sponsors/BrowserStack.png)](https://www.browserstack.com) |                                                                                    |
+| [![BrowserStack](public/sponsors/BrowserStack.png)](https://www.browserstack.com) | [![CrystalSound](public/sponsors/CrystalSound.png)](https://crystalsound.ai)       |
 
 </details>
 

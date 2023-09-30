@@ -128,6 +128,11 @@ img {
     border-style: none;
 }
 
+.rounded-image {
+    border-radius: 50%;
+    box-shadow: 0px 0px 16px 5px rgba(172, 172, 172, 0.2);
+}
+
 svg:not(:root) {
     overflow: hidden;
 }
@@ -283,7 +288,9 @@ template {
     }
 
     .has-animations.is-loaded [class*='reveal-'] {
-        transition: opacity 1s cubic-bezier(0.39, 0.575, 0.565, 1), transform 1s cubic-bezier(0.39, 0.575, 0.565, 1);
+        transition:
+            opacity 1s cubic-bezier(0.39, 0.575, 0.565, 1),
+            transform 1s cubic-bezier(0.39, 0.575, 0.565, 1);
     }
 
     .has-animations.is-loaded [class*='reveal-'].is-revealed {
@@ -912,7 +919,8 @@ strong {
 
 .button-primary {
     color: #f9faff;
-    background-color: #376df9;
+    /* background-color: #376df9; */
+    background-color: #000000;
 }
 
 .button-primary:hover {
@@ -1436,12 +1444,16 @@ textarea.form-input {
 
 .hamburger-inner::before {
     top: -7px;
-    transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in;
+    transition:
+        top 0.1s 0.25s ease-in,
+        opacity 0.1s ease-in;
 }
 
 .hamburger-inner::after {
     bottom: -7px;
-    transition: bottom 0.1s 0.25s ease-in, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19),
+    transition:
+        bottom 0.1s 0.25s ease-in,
+        transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19),
         width 0.1s 0.25s ease-in;
 }
 
@@ -1454,14 +1466,19 @@ textarea.form-input {
 .off-nav-is-active .hamburger-inner::before {
     top: 0;
     opacity: 0;
-    transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out;
+    transition:
+        top 0.1s ease-out,
+        opacity 0.1s 0.12s ease-out;
 }
 
 .off-nav-is-active .hamburger-inner::after {
     width: 24px;
     bottom: 0;
     transform: rotate(-90deg);
-    transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1), width 0.1s ease-out;
+    transition:
+        bottom 0.1s ease-out,
+        transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1),
+        width 0.1s ease-out;
 }
 
 .accordion li {
@@ -1541,7 +1558,9 @@ textarea.form-input {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.15s ease-in-out, opacity 0.15s;
+    transition:
+        max-height 0.15s ease-in-out,
+        opacity 0.15s;
 }
 
 .is-active .accordion-content {
@@ -2094,7 +2113,9 @@ textarea.form-input {
         max-height: 0;
         opacity: 0;
         overflow: hidden;
-        transition: max-height 0.25s ease-in-out, opacity 0.15s;
+        transition:
+            max-height 0.25s ease-in-out,
+            opacity 0.15s;
     }
 
     .header-nav-toggle + .header-nav.is-active {
@@ -2612,9 +2633,31 @@ ul.pricing-item-features-list li {
     padding: 12px 28px;
 }
 
+.clients-size-logo {
+    width: 240px;
+    height: 50px;
+}
+
+.clients-logo {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: radial-gradient(circle at bottom, #000000 0%, #000000 0%, #1d2026 100%);
+}
+
+.clients-logo:hover {
+    background: radial-gradient(circle at bottom, #000000 0%, #000000 0%, #0e0e0e 100%);
+}
+
 @media (min-width: 641px) {
     .clients .clients-inner ul {
         flex-direction: row;
+    }
+}
+@media (max-width: 641px) {
+    .clients-size-logo {
+        width: 300px;
     }
 }
 
@@ -2694,7 +2737,8 @@ ul.pricing-item-features-list li {
 
 .features-tiles-item-image {
     display: inline-flex;
-    border-radius: 50%;
+    padding: 1rem;
+    border-radius: 1rem;
     background: radial-gradient(circle at bottom, #376df9 0%, #ff79af 50%, #ff8d74 100%);
 }
 
@@ -3389,6 +3433,10 @@ img.has-shadow {
     border-radius: 24px;
 }
 
+.w-300 {
+    width: 300px;
+}
+
 @media (max-width: 640px) {
     .ta-l-mobile {
         text-align: left;
@@ -3514,3 +3562,89 @@ img.has-shadow {
     }
 }
 /*Pulse Button*/
+
+/*--------------------------------------------------------------
+# Webkit-Scrollbar Styles
+--------------------------------------------------------------*/
+
+/* Target the scrollbar track */
+::-webkit-scrollbar {
+    background: #1a1b1f;
+    width: 10px; /* width of the scrollbar */
+}
+
+/* Target the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background: #4678f9;
+    border-radius: 5px; /* rounded corners for the thumb */
+    cursor: pointer;
+}
+
+/* Target the scrollbar track when the thumb is being hovered */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #376df9; /* color of the thumb on hover */
+}
+
+/* Target the scrollbar track when the scrollbar is being hovered */
+::-webkit-scrollbar-track:hover {
+    background-color: #000000; /* color of the track on hover */
+}
+
+/*--------------------------------------------------------------
+# Last room link
+--------------------------------------------------------------*/
+
+.last-room {
+    display: none; /*inline-flex*/
+    flex-wrap: nowrap; /* Prevent wrapping by default */
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    margin-bottom: 24px;
+}
+
+.last-room span {
+    color: #ffffff;
+}
+
+.last-room span {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.1px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 16px;
+}
+
+.last-room a {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.1px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    line-height: 16px;
+    padding: 8px 8px;
+    border-radius: 5px;
+    margin: 4px;
+}
+
+.last-room a:hover {
+    background-color: #0000002a;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Use a media query to apply a different flex-wrap value for small screens */
+@media (max-width: 768px) {
+    .last-room {
+        flex-wrap: wrap; /* Allow flex items to wrap on small screens */
+    }
+}
+
+/*--------------------------------------------------------------
+# svg custom size
+--------------------------------------------------------------*/
+
+.wh-200-150 {
+    width: 200px;
+    height: 150px;
+}

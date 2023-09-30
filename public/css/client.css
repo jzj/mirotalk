@@ -6,7 +6,7 @@
 
 :root {
     /* common */
-    --navbar-bg: linear-gradient(#363434, #000000);
+    --navbar-bg: rgba(0, 0, 0, 0.2);
     --body-bg: radial-gradient(#393939, #000000);
     --border: 0.5px solid rgb(255 255 255 / 32%);
 
@@ -35,7 +35,12 @@
     --hover-color: grey;
 
     /* video elem border color */
-    --elem-border-color: none;
+    --elem-border-color: none; /* 1px solid rgb(255 255 255 / 32%) */
+
+    --tab-btn-active: rgb(30 29 29);
+
+    --btn-bar-bg-color: #fff;
+    --btn-bar-color: #000;
 
     /* left buttons bar vertical default */
     --btns-top: 50%;
@@ -59,6 +64,7 @@
     --msger-bg: radial-gradient(#393939, #000000);
     --msger-private-bg: radial-gradient(#393939, #000000);
     --wb-bg: radial-gradient(#393939, #000000);
+    --select-bg: #2c2c2c;
     --box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 
     /* chat msg boble */
@@ -93,8 +99,8 @@ body {
     height: 100%;
     margin: auto;
     overflow: hidden;
-    background: url('../images/bg.svg');
-    /* background: var(--body-bg); */
+    background: var(--body-bg);
+    /* background: url('../images/bg.svg'); */
 }
 
 /*--------------------------------------------------------------
@@ -107,7 +113,7 @@ body {
 }
 
 #google_translate_element select {
-    background: #2c2c2c !important;
+    background: var(--select-bg) !important;
 }
 
 /*--------------------------------------------------------------
@@ -148,10 +154,11 @@ body {
     width: 100%;
     margin-top: 15px;
     padding: 10px;
-    background: #2c2c2c;
+    background: var(--select-bg);
     color: white;
     border: var(--border);
     border-radius: 5px;
+    box-shadow: none;
     cursor: pointer;
 }
 
@@ -205,13 +212,13 @@ body {
 }
 
 #buttonsBar button {
-    border: none;
-    font-size: 1.5rem;
-    transition: all 0.3s ease-in-out;
-    background: #fff;
     padding: 4px;
+    border: none;
+    background: var(--btn-bar-bg-color);
+    color: var(--btn-bar-color);
+    font-size: 1.5rem;
     border-radius: 5px;
-    color: #000;
+    transition: all 0.3s ease-in-out;
 }
 
 #buttonsBar button:hover {
@@ -271,7 +278,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.2);
     color: #666;
     cursor: move;
 }
@@ -282,7 +289,7 @@ body {
     /* border: var(--border); */
     border: none;
     font-size: 1.1rem;
-    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -327,6 +334,7 @@ body {
     border: none;
     border-radius: 3px;
     color: #fff;
+    background-color: var(--select-bg) !important;
     font-size: 1rem;
 }
 
@@ -351,6 +359,7 @@ body {
 #speechRecognitionStart,
 #speechRecognitionStop {
     padding: 10px;
+    margin: auto;
     border: none;
     font-size: 0.7rem;
     border-radius: 5px;
@@ -408,7 +417,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.2);
     color: #666;
     cursor: move;
 }
@@ -417,7 +426,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.2);
     color: #666;
 }
 
@@ -427,7 +436,7 @@ body {
     /* border: var(--border); */
     border: none;
     font-size: 1.1rem;
-    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -618,7 +627,7 @@ button:hover {
     resize: none;
     color: #fff;
     font-size: 14px !important;
-    background: rgb(7, 7, 7);
+    background: rgba(0, 0, 0, 0.2);
     border-top-left-radius: 10px;
     -webkit-transition: height 1s;
     -moz-transition: height 1s;
@@ -706,7 +715,7 @@ button:hover {
 #msgerCPList button {
     border: none;
     font-size: 1rem;
-    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 5px;
 }
@@ -751,6 +760,19 @@ em-emoji-picker {
 }
 
 /*--------------------------------------------------------------
+# Data time picker
+--------------------------------------------------------------*/
+
+#datetimePicker {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background: black;
+    border: none;
+    border-radius: 5px;
+}
+
+/*--------------------------------------------------------------
 # Room QR
 --------------------------------------------------------------*/
 
@@ -765,48 +787,82 @@ em-emoji-picker {
 --------------------------------------------------------------*/
 
 #mySettings {
-    display: none;
     z-index: 16;
-    width: 320px;
-    /* gui */
-    background: var(--body-bg);
-    border-radius: 10px;
+    position: absolute;
+    display: none;
     margin: auto;
-    border: var(--border);
-    box-shadow: var(--box-shadow);
     padding: 10px;
-    min-width: 330px;
+    width: 50%;
+    min-height: 480px;
+    background: var(--body-bg);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    border-radius: 10px;
     overflow: hidden;
 }
 
+.mySettingsMain {
+    display: flex;
+}
+
+@media screen and (max-width: 1030px) {
+    #mySettings {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 830px) {
+    #mySettings {
+        width: 80%;
+        min-height: auto;
+    }
+    .mySettingsMain {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #mySettings {
+        width: 90%;
+    }
+}
+
 #mySettingsHeader {
+    height: 25px;
     cursor: move;
 }
 
-#mySettings label {
-    width: 7em;
-    display: flex;
+#mySettings i,
+#mySettings p {
+    display: inline-flex;
+    margin: auto;
     color: #fff;
+    padding: 5px;
+    background: transparent;
 }
 
 #mySettings select {
-    height: 40px;
-    max-width: 305px;
-    font-size: 0.9rem;
+    display: block;
+    padding: 10px;
+    min-width: 150px;
+    max-width: 310px;
+    margin-top: 10px;
+    /* height: 40px; */
+    background: var(--select-bg) !important;
     color: #fff;
-    background-color: #2b2b2b;
+    border: var(--border);
     border-radius: 5px;
+    box-shadow: none;
     cursor: pointer;
 }
 
 #mySettingsCloseBtn {
-    padding: 5px;
-    /* border: var(--border); */
+    font-size: 1.4rem;
+    color: #fff;
     border: none;
     border-radius: 5px;
-    font-size: 1.2rem;
-    background: var(--body-bg);
-    color: #fff;
+    float: right;
+    background: transparent;
     transition: background 0.23s;
 }
 
@@ -815,6 +871,96 @@ em-emoji-picker {
     transform: var(--btns-hover-scale);
     transition: all 0.3s ease-in-out;
 }
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.title {
+    display: inline-flex;
+    align-items: center;
+    text-align: left;
+    color: white;
+    font-size: 14px;
+}
+
+.buttons {
+    padding: 10px;
+    float: left;
+    text-align: left;
+    color: #fff;
+    width: auto !important;
+    border: var(--border);
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.buttons:hover {
+    background-color: var(--select-bg) !important;
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+}
+
+/*--------------------------------------------------------------
+# Settings buttons
+--------------------------------------------------------------*/
+
+#myPeerNameSet {
+    width: 50%;
+    padding: 10px;
+    border: var(--border);
+    border-radius: 5px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#tabRoomSecurity button {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#myProfileAvatar {
+    margin-top: 10px;
+    width: 64px;
+    height: 64px;
+}
+
+#myPeerNameSetBtn,
+#muteEveryoneBtn,
+#hideEveryoneBtn,
+#ejectEveryoneBtn,
+#roomSendEmailBtn,
+#lockRoomBtn,
+#unlockRoomBtn {
+    padding: 10px;
+    border: var(--border);
+    border-radius: 5px;
+    color: #fff;
+    background-color: transparent;
+}
+
+#myPeerNameSetBtn:hover,
+#roomSendEmailBtn:hover,
+#lockRoomBtn:hover,
+#unlockRoomBtn:hover {
+    color: var(--hover-color);
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+}
+
+#muteEveryoneBtn:hover,
+#hideEveryoneBtn:hover,
+#ejectEveryoneBtn:hover {
+    color: #ff2d00;
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+}
+
+/*--------------------------------------------------------------
+# Settings Table
+--------------------------------------------------------------*/
 
 #mySettingsTable {
     /* margin-top: 5px; */
@@ -827,119 +973,131 @@ em-emoji-picker {
 }
 #mySettingsTable td,
 th {
-    border: var(--border);
-    text-align: center;
-    padding: 10px;
+    padding: 5px;
 }
-#mySettingsTable tr td label {
-    width: 100%;
+#mySettingsTable tr td {
     text-align: left;
 }
 #mySettingsTable tr:nth-child(even) {
     /* background-color: #2b2b2b; */
 }
 
-hr {
-    border: 1px solid grey;
+.width-120 {
+    width: 120px;
 }
 
-#myPeerNameSet {
-    width: 165px;
-    padding: 10px;
-    border: var(--border);
-    border-radius: 5px;
-    color: #fff;
-    background-color: #2b2b2b;
-}
-
-#tabRoomSecurity button,
-#tabRoomParticipants button {
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-#myPeerNameSetBtn,
-#muteEveryoneBtn,
-#hideEveryoneBtn,
-#ejectEveryoneBtn,
-#lockRoomBtn,
-#unlockRoomBtn {
-    padding: 10px;
-    border: var(--border);
-    font-size: 0.9rem;
-    border-radius: 5px;
-    color: #fff;
-    background-color: transparent;
-}
-
-#myPeerNameSetBtn:hover,
-#lockRoomBtn:hover,
-#unlockRoomBtn:hover {
-    color: var(--hover-color);
-    transform: var(--btns-hover-scale);
-    transition: all 0.3s ease-in-out;
-}
-
-#muteEveryoneBtn:hover,
-#hideEveryoneBtn:hover,
-#ejectEveryoneBtn:hover {
-    color: #ff2d00;
-    transform: var(--btns-hover-scale);
-    transition: all 0.3s ease-in-out;
-}
-
-/* Style the tab */
+/*--------------------------------------------------------------
+# Style the tab
+--------------------------------------------------------------*/
 
 .tab {
-    background-color: rgba(0, 0, 0);
-    padding: 5px;
-    border-radius: 10px;
+    padding: 10px;
     overflow: hidden;
+    border-radius: 5px;
+    width: 35%;
+    background-color: var(--body-bg);
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    border-right: var(--border);
+}
+
+.tabActions {
+    position: relative;
+    width: 65%;
+    background-color: var(--body-bg);
+    min-height: 480px;
+}
+
+@media screen and (max-width: 830px) {
+    .tab {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row;
+        border-right: none;
+    }
+    .tabActions {
+        width: 100%;
+        min-height: 100px;
+        border-radius: 10px;
+    }
+    .tabButtonText {
+        display: none !important;
+    }
 }
 
 /* Style the buttons inside the tab */
-
 .tab button {
-    margin: 2px;
-    font-size: 1rem;
-    background-color: inherit;
+    margin: 3px;
+    padding: 11px;
     float: left;
-    /* border: var(--border); */
-    border: none;
+    text-align: left;
+    color: #fff;
+    border: var(--border);
     border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
     outline: none;
     cursor: pointer;
-    padding: 12px 14px;
     transition: 0.3s;
-    color: #fff;
 }
 
 /* Change background color of buttons on hover */
-
 .tab button:hover {
     background-color: transparent;
-    color: var(--hover-color);
-    transition: all 0.3s ease-in-out;
+    transform: scale(0.95);
 }
 
 /* Create an active/current tablink class */
-
 .tab button.active {
-    background-color: rgb(30 29 29);
+    background-color: var(--tab-btn-active);
 }
 
 /* Style the tab content */
-
 .tabcontent {
     display: none;
     padding: 6px 12px;
     border-top: none;
 }
 
-/* on open display devices tab */
+.tabcontent button {
+    margin-top: 10px;
+    width: 100%;
+    text-align: left;
+}
 
-#tabDevices {
+.tabcontent button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(1);
+}
+
+/* on open display devices tab */
+#tabRoom {
     display: block;
+}
+
+/*--------------------------------------------------------------
+# Settings - microphone volume indicator
+--------------------------------------------------------------*/
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: var(--body-bg);
+    border-radius: 8px;
+}
+
+.volume-bar {
+    flex: 1;
+    height: 5px;
+    margin: 0 2px;
+    background-color: #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.active {
+    background-color: limegreen;
 }
 
 /*--------------------------------------------------------------
@@ -1021,6 +1179,7 @@ input:checked + .slider:before {
 
 .swal2-input {
     border: var(--border) !important;
+    box-shadow: none !important;
 }
 
 .swal2-file {
@@ -1037,14 +1196,22 @@ input:checked + .slider:before {
     border: var(--border) !important;
 }
 
+.swal2-popup .swal2-styled:focus {
+    box-shadow: none !important;
+}
+
 .swal2-select {
-    background-color: black !important;
+    background-color: var(--select-bg) !important;
     color: white !important;
     border-radius: 6px !important;
 }
 
 .swal2-timer-progress-bar-container {
     background: #376df9;
+}
+
+.img-about {
+    margin: 0 !important;
 }
 
 /*--------------------------------------------------------------
@@ -1348,6 +1515,7 @@ progress {
 select {
     height: 40px;
     line-height: 40px;
+    box-shadow: none;
 }
 
 hr {
